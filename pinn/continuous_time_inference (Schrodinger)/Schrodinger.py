@@ -86,20 +86,25 @@ class PhysicsInformedNN:
                     tf.reduce_mean(tf.square(self.f_v_pred))
         
         # Optimizers
-        self.optimizer = tf.contrib.opt.ScipyOptimizerInterface(self.loss, 
-                                                                method = 'L-BFGS-B', 
-                                                                options = {'maxiter': 50000,
-                                                                           'maxfun': 50000,
-                                                                           'maxcor': 50,
-                                                                           'maxls': 50,
-                                                                           'ftol' : 1.0 * np.finfo(float).eps})
+        self.optimizer = tf.contrib.opt.ScipyOptimizerInterface(
+            self.loss, 
+            method = 'L-BFGS-B', 
+            options = {
+                'maxiter': 50000,
+                'maxfun': 50000,
+                'maxcor': 50,
+                'maxls': 50,
+                'ftol' : 1.0 * np.finfo(float).eps
+            }
+        )
     
         self.optimizer_Adam = tf.train.AdamOptimizer()
         self.train_op_Adam = self.optimizer_Adam.minimize(self.loss)
                 
         # tf session
-        self.session = tf.Session(config=tf.ConfigProto(allow_soft_placement=True,
-                                                     log_device_placement=True))
+        self.session = tf.Session(
+            config=tf.ConfigProto(allow_soft_placement=True, log_device_placement=True)
+        )
         
         init = tf.global_variables_initializer()
         self.session.run(init)
@@ -132,7 +137,7 @@ class PhysicsInformedNN:
     def neural_net(self, X, weights, biases):
         num_layers = len(weights) + 1
         
-        H = 2.0*(X - self.lb)/(self.ub - self.lb) - 1.0
+        H = 2.0 * (X - self.lb)/(self.ub - self.lb) - 1.0
         for l in range(0,num_layers-2):
             W = weights[l]
             b = biases[l]
@@ -189,10 +194,12 @@ class PhysicsInformedNN:
                 print(f"It: {it}, Loss: {loss_value:.3e}, Time: {elapsed:.2f}")
                 start_time = time.time()
                                                                                                                           
-        self.optimizer.minimize(self.session, 
-                                feed_dict = tf_dict,         
-                                fetches = [self.loss], 
-                                loss_callback = self.callback)        
+        self.optimizer.minimize(
+            self.session, 
+            feed_dict = tf_dict,         
+            fetches = [self.loss], 
+            loss_callback = self.callback
+        )        
                                     
     
     def predict(self, X_star):
@@ -303,7 +310,14 @@ if __name__ == "__main__":
     cax = divider.append_axes("right", size="5%", pad=0.05)
     fig.colorbar(h, cax=cax)
     
-    ax.plot(X_u_train[:,1], X_u_train[:,0], 'kx', label = f"Data ({X_u_train.shape[0]} points)", markersize = 4, clip_on = False)
+    ax.plot(
+        X_u_train[:,1],
+        X_u_train[:,0],
+        'kx',
+        label=f"Data ({X_u_train.shape[0]} points)",
+        markersize=4,
+        clip_on=False
+    )
     
     line = np.linspace(x.min(), x.max(), 2)[:,None]
     ax.plot(t[75]*np.ones((2,1)), line, 'k--', linewidth = 1)
@@ -327,8 +341,8 @@ if __name__ == "__main__":
     ax.set_ylabel('$|h(t,x)|$')    
     ax.set_title(f"$t = {t[75]:.2f}$", fontsize = 10)
     ax.axis('square')
-    ax.set_xlim([-5.1,5.1])
-    ax.set_ylim([-0.1,5.1])
+    ax.set_xlim([-5.1, 5.1])
+    ax.set_ylim([-0.1, 5.1])
     
     ax = plt.subplot(gs1[0, 1])
     ax.plot(x,Exact_h[:,100], 'b-', linewidth = 2, label = 'Exact')       
@@ -336,8 +350,8 @@ if __name__ == "__main__":
     ax.set_xlabel('$x$')
     ax.set_ylabel('$|h(t,x)|$')
     ax.axis('square')
-    ax.set_xlim([-5.1,5.1])
-    ax.set_ylim([-0.1,5.1])
+    ax.set_xlim([-5.1, 5.1])
+    ax.set_ylim([-0.1, 5.1])
     ax.set_title(f"$t = {t[100]:.2f}$", fontsize = 10)
     ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.8), ncol=5, frameon=False)
     
@@ -347,8 +361,8 @@ if __name__ == "__main__":
     ax.set_xlabel('$x$')
     ax.set_ylabel('$|h(t,x)|$')
     ax.axis('square')
-    ax.set_xlim([-5.1,5.1])
-    ax.set_ylim([-0.1,5.1])    
+    ax.set_xlim([-5.1, 5.1])
+    ax.set_ylim([-0.1, 5.1])    
     ax.set_title(f"$t = {t[125]:.2f}$", fontsize = 10)
     
     # savefig('./figures/NLS')  
