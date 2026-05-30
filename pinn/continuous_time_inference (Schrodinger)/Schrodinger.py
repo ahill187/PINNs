@@ -21,7 +21,7 @@ tf.set_random_seed(1234)
 
 
 class PhysicsInformedNN:
-    # Initialize the class
+
     def __init__(self, x0, u0, v0, tb, X_f, layers, lb, ub):
         
         X0 = np.concatenate((x0, 0*x0), 1) # (x0, 0)
@@ -117,12 +117,11 @@ class PhysicsInformedNN:
     def initialize_NN(self, layers):        
         weights = []
         biases = []
-        num_layers = len(layers) 
-        for l in range(0,num_layers-1):
+        for l in range(0, len(layers) - 1):
             W = self.xavier_init(size=[layers[l], layers[l+1]])
             b = tf.Variable(tf.zeros([1,layers[l+1]], dtype=tf.float32), dtype=tf.float32)
             weights.append(W)
-            biases.append(b)        
+            biases.append(b)
         return weights, biases
         
     def xavier_init(self, size):
@@ -218,7 +217,7 @@ if __name__ == "__main__":
      
     noise = 0.0        
     
-    # Doman bounds
+    # Domain bounds
     lb = np.array([-5.0, 0.0])
     ub = np.array([5.0, np.pi/2])
 
