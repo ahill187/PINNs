@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import scipy.io
 from scipy.interpolate import griddata
 from pyDOE import lhs
-from plotting import newfig, savefig
+# from plotting import newfig, savefig
 from mpl_toolkits.mplot3d import Axes3D
 import time
 import matplotlib.gridspec as gridspec
@@ -98,11 +98,19 @@ class PhysicsInformedNN:
         self.train_op_Adam = self.optimizer_Adam.minimize(self.loss)
                 
         # tf session
-        self.sess = tf.Session(config=tf.ConfigProto(allow_soft_placement=True,
+        self.session = tf.Session(config=tf.ConfigProto(allow_soft_placement=True,
                                                      log_device_placement=True))
         
         init = tf.global_variables_initializer()
-        self.sess.run(init)
+        self.session.run(init)
+    
+    @property
+    def session(self) -> tf.Session:
+        return self._session
+    
+    @session.setter
+    def session(self, session: tf.Session):
+        self._session = session
               
     def initialize_NN(self, layers):        
         weights = []
@@ -173,17 +181,17 @@ class PhysicsInformedNN:
         
         start_time = time.time()
         for it in range(nIter):
-            self.sess.run(self.train_op_Adam, tf_dict)
+            self.session.run(self.train_op_Adam, tf_dict)
             
             # Print
             if it % 10 == 0:
                 elapsed = time.time() - start_time
-                loss_value = self.sess.run(self.loss, tf_dict)
+                loss_value = self.session.run(self.loss, tf_dict)
                 print('It: %d, Loss: %.3e, Time: %.2f' % 
                       (it, loss_value, elapsed))
                 start_time = time.time()
                                                                                                                           
-        self.optimizer.minimize(self.sess, 
+        self.optimizer.minimize(self.session, 
                                 feed_dict = tf_dict,         
                                 fetches = [self.loss], 
                                 loss_callback = self.callback)        
@@ -193,14 +201,14 @@ class PhysicsInformedNN:
         
         tf_dict = {self.x0_tf: X_star[:,0:1], self.t0_tf: X_star[:,1:2]}
         
-        u_star = self.sess.run(self.u0_pred, tf_dict)  
-        v_star = self.sess.run(self.v0_pred, tf_dict)  
+        u_star = self.session.run(self.u0_pred, tf_dict)  
+        v_star = self.session.run(self.v0_pred, tf_dict)  
         
         
         tf_dict = {self.x_f_tf: X_star[:,0:1], self.t_f_tf: X_star[:,1:2]}
         
-        f_u_star = self.sess.run(self.f_u_pred, tf_dict)
-        f_v_star = self.sess.run(self.f_v_pred, tf_dict)
+        f_u_star = self.session.run(self.f_u_pred, tf_dict)
+        f_v_star = self.session.run(self.f_v_pred, tf_dict)
                
         return u_star, v_star, f_u_star, f_v_star
     
