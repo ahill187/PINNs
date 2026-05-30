@@ -172,7 +172,7 @@ class PhysicsInformedNN:
     def callback(self, loss):
         print(f"Loss: {loss}")
         
-    def train(self, nIter):
+    def train(self, n_iter: int):
         
         tf_dict = {self.x0_tf: self.x0, self.t0_tf: self.t0,
                    self.u0_tf: self.u0, self.v0_tf: self.v0,
@@ -181,7 +181,7 @@ class PhysicsInformedNN:
                    self.x_f_tf: self.x_f, self.t_f_tf: self.t_f}
         
         start_time = time.time()
-        for it in range(nIter):
+        for it in range(n_iter):
             self.session.run(self.train_op_Adam, tf_dict)
 
             if it % 10 == 0:
