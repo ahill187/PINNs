@@ -13,6 +13,7 @@ import scipy.io
 from plotting import newfig, savefig
 import matplotlib.gridspec as gridspec
 from mpl_toolkits.axes_grid1 import make_axes_locatable
+from pinn.utils import get_data_path
 
 np.random.seed(1234)
 tf.set_random_seed(1234)
@@ -166,7 +167,7 @@ if __name__ == "__main__":
     
     N = 200
     
-    data = scipy.io.loadmat('../Data/AC.mat')
+    data = scipy.io.loadmat(get_data_path("data/AC.mat"))
     
     t = data['tt'].flatten()[:,None] # T x 1
     x = data['x'].flatten()[:,None] # N x 1

@@ -17,6 +17,7 @@ from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 from plotting import newfig, savefig
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import matplotlib.gridspec as gridspec
+from pinn.utils import get_data_path
 
 np.random.seed(1234)
 tf.set_random_seed(1234)
@@ -212,7 +213,7 @@ if __name__ == "__main__":
     layers = [3, 20, 20, 20, 20, 20, 20, 20, 20, 2]
     
     # Load Data
-    data = scipy.io.loadmat('../Data/cylinder_nektar_wake.mat')
+    data = scipy.io.loadmat(get_data_path("data/cylinder_nektar_wake.mat"))
            
     U_star = data['U_star'] # N x 2 x T
     P_star = data['p_star'] # N x T
@@ -330,7 +331,7 @@ if __name__ == "__main__":
     ############################# Plotting ###############################
     ######################################################################    
      # Load Data
-    data_vort = scipy.io.loadmat('../Data/cylinder_nektar_t0_vorticity.mat')
+    data_vort = scipy.io.loadmat(get_data_path("data/cylinder_nektar_t0_vorticity.mat"))
            
     x_vort = data_vort['x'] 
     y_vort = data_vort['y'] 

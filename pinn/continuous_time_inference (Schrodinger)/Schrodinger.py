@@ -16,6 +16,7 @@ from mpl_toolkits.mplot3d import Axes3D
 import time
 import matplotlib.gridspec as gridspec
 from mpl_toolkits.axes_grid1 import make_axes_locatable
+from pinn.utils import get_data_path
 
 
 np.random.seed(1234)
@@ -216,7 +217,7 @@ if __name__ == "__main__":
     N_f = 20000
     layers = [2, 100, 100, 100, 100, 2]
         
-    data = scipy.io.loadmat('../Data/NLS.mat')
+    data = scipy.io.loadmat(get_data_path("data/NLS.mat"))
     
     t = data['tt'].flatten()[:,None]
     x = data['x'].flatten()[:,None]

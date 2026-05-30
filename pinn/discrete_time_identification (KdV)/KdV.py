@@ -5,6 +5,7 @@
 import sys
 sys.path.insert(0, '../../Utilities/')
 
+from requests import get
 import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
@@ -14,6 +15,7 @@ from plotting import newfig, savefig
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.gridspec as gridspec
 from mpl_toolkits.axes_grid1 import make_axes_locatable
+from pinn.utils import get_data_path
 
 np.random.seed(1234)
 tf.set_random_seed(1234)
@@ -186,7 +188,7 @@ if __name__ == "__main__":
     N1 = 201
     layers = [1, 50, 50, 50, 50, q]
     
-    data = scipy.io.loadmat('../Data/KdV.mat')
+    data = scipy.io.loadmat(get_data_path("data/KdV.mat"))
     
     t_star = data['tt'].flatten()[:,None]
     x_star = data['x'].flatten()[:,None]
