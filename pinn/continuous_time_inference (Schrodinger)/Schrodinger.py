@@ -169,7 +169,7 @@ class PhysicsInformedNN:
         return f_u, f_v
     
     def callback(self, loss):
-        print('Loss:', loss)
+        print(f"Loss: {loss}")
         
     def train(self, nIter):
         
@@ -182,13 +182,11 @@ class PhysicsInformedNN:
         start_time = time.time()
         for it in range(nIter):
             self.session.run(self.train_op_Adam, tf_dict)
-            
-            # Print
+
             if it % 10 == 0:
                 elapsed = time.time() - start_time
                 loss_value = self.session.run(self.loss, tf_dict)
-                print('It: %d, Loss: %.3e, Time: %.2f' % 
-                      (it, loss_value, elapsed))
+                print(f"It: {it}, Loss: {loss_value:.3e}, Time: {elapsed:.2f}")
                 start_time = time.time()
                                                                                                                           
         self.optimizer.minimize(self.session, 
@@ -258,7 +256,7 @@ if __name__ == "__main__":
     start_time = time.time()                
     model.train(50000)
     elapsed = time.time() - start_time                
-    print('Training time: %.4f' % (elapsed))
+    print(f"Training time: {elapsed:.4f}")
     
         
     u_pred, v_pred, f_u_pred, f_v_pred = model.predict(X_star)
@@ -267,9 +265,9 @@ if __name__ == "__main__":
     error_u = np.linalg.norm(u_star-u_pred,2)/np.linalg.norm(u_star,2)
     error_v = np.linalg.norm(v_star-v_pred,2)/np.linalg.norm(v_star,2)
     error_h = np.linalg.norm(h_star-h_pred,2)/np.linalg.norm(h_star,2)
-    print('Error u: %e' % (error_u))
-    print('Error v: %e' % (error_v))
-    print('Error h: %e' % (error_h))
+    print(f"Error u: {error_u:e}")
+    print(f"Error v: {error_v:e}")
+    print(f"Error h: {error_h:e}")
 
     
     U_pred = griddata(X_star, u_pred.flatten(), (X, T), method='cubic')
@@ -305,7 +303,7 @@ if __name__ == "__main__":
     cax = divider.append_axes("right", size="5%", pad=0.05)
     fig.colorbar(h, cax=cax)
     
-    ax.plot(X_u_train[:,1], X_u_train[:,0], 'kx', label = 'Data (%d points)' % (X_u_train.shape[0]), markersize = 4, clip_on = False)
+    ax.plot(X_u_train[:,1], X_u_train[:,0], 'kx', label = f"Data ({X_u_train.shape[0]} points)", markersize = 4, clip_on = False)
     
     line = np.linspace(x.min(), x.max(), 2)[:,None]
     ax.plot(t[75]*np.ones((2,1)), line, 'k--', linewidth = 1)
@@ -327,7 +325,7 @@ if __name__ == "__main__":
     ax.plot(x,H_pred[75,:], 'r--', linewidth = 2, label = 'Prediction')
     ax.set_xlabel('$x$')
     ax.set_ylabel('$|h(t,x)|$')    
-    ax.set_title('$t = %.2f$' % (t[75]), fontsize = 10)
+    ax.set_title(f"$t = {t[75]:.2f}$", fontsize = 10)
     ax.axis('square')
     ax.set_xlim([-5.1,5.1])
     ax.set_ylim([-0.1,5.1])
@@ -340,7 +338,7 @@ if __name__ == "__main__":
     ax.axis('square')
     ax.set_xlim([-5.1,5.1])
     ax.set_ylim([-0.1,5.1])
-    ax.set_title('$t = %.2f$' % (t[100]), fontsize = 10)
+    ax.set_title(f"$t = {t[100]:.2f}$", fontsize = 10)
     ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.8), ncol=5, frameon=False)
     
     ax = plt.subplot(gs1[0, 2])
@@ -351,7 +349,7 @@ if __name__ == "__main__":
     ax.axis('square')
     ax.set_xlim([-5.1,5.1])
     ax.set_ylim([-0.1,5.1])    
-    ax.set_title('$t = %.2f$' % (t[125]), fontsize = 10)
+    ax.set_title(f"$t = {t[125]:.2f}$", fontsize = 10)
     
     # savefig('./figures/NLS')  
     
